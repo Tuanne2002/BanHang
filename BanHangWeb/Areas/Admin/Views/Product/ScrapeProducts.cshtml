@@ -1,0 +1,46 @@
+﻿@model List<BanHangWeb.Models.ProductModel>
+@{
+    ViewData["Title"] = "Dữ liệu Scraped";
+    List<BanHangWeb.Models.CategoryModel> categories = ViewBag.Categories;
+    List<BanHangWeb.Models.BrandModel> brands = ViewBag.Brands;
+}
+
+<div class="container">
+    <h2>Dữ liệu Scraped từ Phong Vũ</h2>
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Mô tả</th>
+                    <th>Giá</th>
+                    <th>Ảnh</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>@product.Description</td>
+                        <td>@product.Price</td>
+                        <td>
+                            <img src="@product.Image" style="width:100px; height:auto;" />
+                        </td>
+                        <td>@categories.FirstOrDefault(c => c.Id == product.CategoryId)?.Name</td>
+                        <td>@brands.FirstOrDefault(b => b.Id == product.BrandId)?.Name</td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Không có dữ liệu scraped.</p>
+    }
+</div>

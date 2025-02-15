@@ -1,0 +1,72 @@
+﻿@model IEnumerable<OrderModel>
+@{
+    ViewData["title"] = "Đơn Hàng";
+}
+<h3>List Order</h3>
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th scope="col">Order Id</th>
+            <th scope="col">Order Code</th>
+            <th scope="col">Order ShipingCost</th>
+            <th scope="col">Order Coupon</th>
+            <th scope="col">Order User</th>
+            <th scope="col">Order Date</th>
+            <th scope="col">Payment</th>
+            <th scope="col">Order Status</th>
+            <th>Action</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.OrderCode</td>
+                <td>@item.ShippingCost.ToString("#,##0 VND")</td>
+                <td>@item.CouponCode</td>
+                <td>
+                    @if (item.PaymentMethod == "COD" || item.PaymentMethod == null)
+                    {
+                        <span class="text text-primary"> @item.PaymentMethod </span>
+                    }
+                    else
+                    {
+                        <a asp-route-orderId="@item.PaymentMethod"
+                           asp-action="PaymentMomoInfo"
+                           asp-controller="Order"
+                           class="btn btn-danger">
+                            Qua MOMO @item.PaymentMethod
+                        </a>
+                    }
+                </td>
+                <td>@Html.Raw(@item.UserName)</td>
+                <td>@item.CreatedDate</td>
+                <td>
+                    @if (item.Status == 1)
+                    {
+                        <span class="text text-success">Đơn hàng mới</span>
+                    }
+                    else if (item.Status == 2)
+                    {
+                        <span class="text text-primary">Đã xử lý</span>
+                    }
+                    else
+                    {
+                        <span class="text text-danger">Đã Hủy</span>
+                    }
+                </td>
+
+                <td>
+                    <a asp-action="ViewOrder" class="btn btn-warning btn-sm" asp-controller="Order" asp-route-ordercode="@item.OrderCode">View Order</a>
+                    <a asp-action="Delete" class="btn btn-danger btn-sm confirmDeletion" asp-controller="Order" asp-route-Id="@item.Id">Delete</a>
+                </td>
+
+            </tr>
+        }
+
+
+    </tbody>
+</table>

@@ -1,0 +1,87 @@
+﻿@model string
+ @*{
+     //var currentUrl = Url.ActionContext.HttpContext.Request.Path;
+     var currentUrl = Context.Request.QueryString.HasValue
+         ? $"{Context.Request.Path}{Context.Request.QueryString}"
+         : Context.Request.Path.ToString();
+ }*@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+           
+            <div class="sort-options">
+                <a href="/category/@Model?sort_by=price_increase" class="sort-link">Giá tăng dần</a>
+                <a href="/category/@Model?sort_by=price_decrease" class="sort-link">Giá giảm dần</a>
+                <a href="/category/@Model?sort_by=price_newest" class="sort-link">Mới nhất</a>
+                <a href="/category/@Model?sort_by=price_oldest" class="sort-link">Cũ nhất</a>
+            </div>
+        </div>
+        
+    </div>
+    @*<div class="col-md-5">
+        <h5> Lọc theo giá</h5>
+        <from>
+            <label for="amount">Price range:</label>
+            <input type="text" id="amount" readonly="" style="border:0; color:#f6931f; font-weight:bold;">
+            </p>
+
+            <div id="slider-range"></div>
+        </from>
+    </div>*@
+
+</div>
+<style>
+    .sort-options {
+        display: flex;
+        gap: 8px; /* Adjust spacing as needed */
+        padding-top: 5px;
+        padding-bottom 10px;
+    }
+
+    .sort-link {
+        display: inline-block;
+        padding: 8px 15px;
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        text-align: center; /* Center text */
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+
+        .sort-link:hover {
+            background-color: #f0f0f0; /* Adjust hover background color */
+            text-decoration: none; /* Remove hover underline */
+        }
+</style>
+@*section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sort_by').on('change', function () {
+                var url = $(this).val();
+                console.log("URL:", url);
+                // alert(url);
+                if (url) {
+                    window.location = url;
+                }
+                return false;
+            });
+        });
+    </script>
+}*@
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#sort_by').change(function () {
+                var selectedValue = $(this).val();
+                if (selectedValue) {
+                    window.location.href = selectedValue;
+                }
+            });
+        });
+    </script>
+
+    
+}

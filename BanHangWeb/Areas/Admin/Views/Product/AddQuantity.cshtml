@@ -1,0 +1,68 @@
+﻿@model ProductQuantityModel
+@{
+    ViewData["title"] = "Create Quantity";
+    var total_quantity = 0;
+    var key = 1;
+}
+<h4>Create Quantity</h4>
+<div class="col-md-9">
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success">@TempData["success"]</div>
+    }
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+
+    <form asp-action="StoreProductQuantity" enctype="multipart/form-data" method="post">
+        <input type="hidden" name="ProductId" value="@ViewBag.Id"/>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label>Quantity</label>
+            <input min="1" value="1" max="3000" asp-for="Quantity" class="form-control" placeholder="Nhập số lượng sản phẩm" />
+            <span asp-validation-for="Quantity" class="text-danger" />
+        </div>
+
+        
+
+        <div class="form-group mt-3">
+            <button class="btn btn-primary">Create</button>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Back to List Product</a>
+        </div>
+
+
+        <h3>Số lượng sản phẩm còn lại:</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Số lượng đã thêm</th>
+                    <th>Ngày</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach( var productQuantity in ViewBag.ProductQuantity)
+                {
+                    total_quantity += productQuantity.Quantity;
+                    <tr>
+                        <td>@key</td>
+                        <td>@productQuantity.Quantity</td>
+                        <td>@productQuantity.DateCreated</td>
+                    </tr>
+                    key++;
+                }
+            </tbody>
+            <tr>
+                <td>Tổng số lượng: @total_quantity</td>
+            </tr>
+
+        </table>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

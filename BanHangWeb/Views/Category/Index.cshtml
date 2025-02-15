@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ProductModel>
+
+<div class="col-sm-3">
+	
+	<partial name="_SideBarPartial" />
+</div>
+<style>
+	.product-image-wrapper {
+		height: 450px;
+	}
+</style>
+<div class="col-sm-9 padding-right">
+	<partial name="_FilterProductsPartial" model="@ViewBag.Slug" />
+	<div class="features_items">
+		<!--features_items-->
+		<h2 class="title text-center">Features Items</h2>
+		@foreach (var item in Model)
+		{
+			<div class="col-sm-4">
+				<div class="product-image-wrapper">
+					<a asp-action="Details" asp-controller="Product" asp-route-Id="@item.Id">
+						<div class="productinfo text-center">
+							<img src="~/media/products/@item.Image" alt="@item.Name" width="100%" height="200px" />
+							<h2>@item.Price.ToString("#,##0 VND")</h2>
+							<p>@item.Name</p>
+							@*<p>Danh mục: @item.Category.Name</p>
+						<p>Thương hiệu: @item.Brand.Name</p>*@
+							@if (@item.Quantity > 0)
+							{
+								<a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id"><i class="fa fa-shopping-cart"></i>Thêm vào giỏ</a>
+							}
+							else
+							{
+								<a class="btn btn-default add-to-cart" ><i class="fa fa-shopping-cart"></i>Sản phẩm đã hết</a>
+							}
+
+						</div>
+					</a>
+					<div class="choose">
+						@if (User.Identity?.IsAuthenticated ?? false)
+						{
+							<ul class="nav nav-pills nav-justified">
+								<li>
+									<button class="btn add-btn-wishlist" data-product_id="@item.Id">Yêu thích</button>
+								</li>
+								<li>
+									<button class="btn add-btn-compare" data-product_id="@item.Id">So sánh</button>
+								</li>
+							</ul>
+						}
+					</div>
+				</div>
+			</div>
+		}
+
+
+	</div><!--features_items-->
+
+
+
+</div>

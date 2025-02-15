@@ -1,0 +1,76 @@
+﻿@model IEnumerable<BrandModel>
+@{
+    ViewData["title"] = "DashBoard";
+    Paginate pager = new Paginate();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+<h3>Dashboard Statistic</h3>
+
+<div class="row">
+    <div class="col-md-3">
+        <p>Thống kê sản phẩm</p>
+        @ViewBag.CountProduct sản phẩm
+    </div>
+    <div class="col-md-3">
+        <p>Thống kê đơn hàng</p>
+        @ViewBag.CountOrder đơn
+    </div>
+    <div class="col-md-3">
+        <p>Thống kê danh mục</p>
+        @ViewBag.CountCategory danh mục
+    </div>
+    <div class="col-md-3">
+        <p>Thống kê user</p>
+        @ViewBag.CountUser users
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <h4>Lọc dữ liệu</h4>
+            <select class="filter-select">
+                <option value="30">---Lọc dữ liệu---</option>
+                <option value="7">7 ngày trước</option>
+                <option value="30">tháng qua</option>
+                <option value="90">3 tháng trước</option>
+                <option value="365">1 năm</option>
+            </select>
+        </div>
+        <h4>Biểu đồ thống kê</h4>
+        <div id="myfirstchart" style="height: 250px;"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "@Url.Action("GetChartData", "Dashboard")",
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                    //Chart Morris
+                    new Morris.Line({
+                        element: 'myfirstchart',
+                        data: data, // Directly use the data from the server
+                        xkey: 'date',
+                        xLabelFormat: function (x) {
+                            return new Date(x).toLocaleDateString();
+                        },
+                        ykeys: ['sold', 'quantity', 'revenue', 'profit'],
+                        labels: ["Đơn hàng", "Số lượng bán ra", "Doanh thu", "Lợi nhuận"]
+                    });
+                },
+                error: function (error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        });
+    </script>
+}

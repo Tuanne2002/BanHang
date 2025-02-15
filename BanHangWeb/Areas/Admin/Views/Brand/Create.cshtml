@@ -1,0 +1,50 @@
+﻿@model BrandModel
+@{
+    ViewData["title"] = "Create Brand";
+}
+<h4>Create Brand</h4>
+<div class="col-md-9">
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success">@TempData["success"]</div>
+    }
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+
+    <form asp-action="Create" enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input asp-for="Name" class="form-control" placeholder="Nhập tên thương hiệu" />
+            <span asp-validation-for="Name" class="text-danger" />
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" placeholder="Mô tả thương hiệu"></textarea>
+            <span asp-validation-for="Description" class="text-danger" />
+        </div>
+
+        <div class="form-group">
+            <label for="Status">Status</label>
+            <select asp-for="Status" class="form-control">
+                <option value="0">Ẩn</option>
+                <option value="1">Hiện</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger" />
+        </div>
+
+        <div class="form-group mt-3">
+            <button class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List Brand</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

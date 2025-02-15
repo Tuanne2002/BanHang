@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ProductModel>
+@{
+	ViewData["Title"] = @ViewBag.Keyword;
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-sm-3">
+	@Html.Partial("_SideBarPartial")
+</div>
+<style>
+	.product-image-wrapper {
+		height: 450px;
+	}
+</style>
+<div class="col-sm-9 padding-right">
+	<div class="features_items">
+		<!--features_items-->
+		<h2 class="title text-center">@ViewBag.Keyword</h2>
+		@foreach (var item in Model)
+		{
+			<div class="col-sm-4">
+				<div class="product-image-wrapper">
+					<a asp-action="Details" asp-controller="Product" asp-route-Id="@item.Id">
+						<div class="productinfo text-center">
+							<img src="~/media/products/@item.Image" alt="@item.Name" width="100%" />
+							<h2>@item.Price.ToString("#,##0 VND")</h2>
+							<p>@item.Name</p>
+                            @*<p>Danh mục: @item.Category.Name</p>
+                        <p>Thương hiệu: @item.Brand.Name</p>*@
+							<a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+						</div>
+					</a>
+					<div class="choose">
+						<ul class="nav nav-pills nav-justified">
+							<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+							<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		}
+
+
+	</div><!--features_items-->
+
+
+
+</div>
+
+@*@model IEnumerable<ProductModel>
+
+<div class="col-sm-3">
+    @Html.Partial("_SideBarPartial")
+</div>
+
+<div class="col-sm-9 padding-right">
+    <div class="features_items">
+        <h2 class="title text-center">@ViewBag.Keyword</h2>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p>Không tìm thấy sản phẩm nào.</p>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-4">
+                    <div class="product-image-wrapper">
+                        <a asp-action="Details" asp-controller="Product" asp-route-Id="@item.Id">
+                            <div class="productinfo text-center">
+                                <img src="@(item.Image ?? "~/media/products/default.jpg")" alt="@item.Name" width="100%" />
+                                <h2>@item.Price.ToString("#,##0 VND")</h2>
+                                <p>@item.Name</p>
+
+                                @if (item.Category != null)
+                                {
+                                    <p>Danh mục: @item.Category.Name</p>
+                                }
+
+                                @if (item.Brand != null)
+                                {
+                                    <p>Thương hiệu: @item.Brand.Name</p>
+                                }
+
+                                <a class="btn btn-default add-to-cart" asp-action="Add" asp-controller="Cart" asp-route-id="@item.Id">
+                                    <i class="fa fa-shopping-cart"></i>Add to cart
+                                </a>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>*@

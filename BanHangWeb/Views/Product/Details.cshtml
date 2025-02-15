@@ -1,0 +1,168 @@
+﻿@model ProductDetailsViewModel
+
+<div class="row">
+    <div class="col-sm-3">
+        @Html.Partial("_SideBarPartial")
+    </div>
+
+    <div class="col-sm-9 padding-right">
+        <div class="product-details">
+            <!-- Product Details -->
+            <div class="col-sm-5">
+                <div class="view-product">
+                    <img src="~/media/products/@Model.ProductDetails.Image" alt="@Model.ProductDetails.Name" />
+                </div>
+            </div>
+
+            <div class="col-sm-7">
+                <div class="product-information">
+                    <!-- Product Information -->
+                    <h2>@Model.ProductDetails.Name</h2>
+                    <span>
+                        <span>@Model.ProductDetails.Price.ToString("#,##0 VND")</span>
+                        @if (@Model.ProductDetails.Quantity > 0)
+                        {
+                            <button type="button" class="btn btn-default cart">
+                                <i class="fa fa-shopping-cart"></i> Thêm vào giỏ
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-default cart">
+                                <i class="fa fa-shopping-cart"></i> Sản phẩm đã hết
+                            </button>
+                        }
+
+                    </span>
+                    @*<p><b>Tình trạng:</b> @if (Model.Availability) { @"Còn hàng" } else { @"Hết hàng" }</p>*@
+                    <p><b>Thương hiệu:</b> @Model.ProductDetails.Brand.Name</p>
+                    <p><b>Danh mục:</b> @Model.ProductDetails.Category.Name</p>
+                    
+
+                </div>
+            </div>
+        </div>
+        <!-- Category Tabs Section -->
+        <div class="category-tab shop-details-tab">
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#details" data-toggle="tab">Mô Tả</a></li>
+                    <li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
+                    <li><a href="#tag" data-toggle="tab">Tag</a></li>
+                    <li ><a href="#reviews" data-toggle="tab">Đánh giá</a></li>
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="details">
+                    @Html.Raw(Model.ProductDetails.Description)
+                </div>
+
+                <div class="tab-pane fade" id="companyprofile">
+                    <!-- Sample company profile products -->
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        <div class="col-sm-3">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="images/home/gallery@(i+1).jpg" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart">
+                                            <i class="fa fa-shopping-cart"></i>Add to cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="tab-pane fade" id="tag">
+                    <!-- Sample tagged products -->
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        <div class="col-sm-3">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="images/home/gallery@(i+1).jpg" alt="" />
+                                        <h2>$56</h2>
+                                        <p>Easy Polo Black Edition</p>
+                                        <button type="button" class="btn btn-default add-to-cart">
+                                            <i class="fa fa-shopping-cart"></i>Add to cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="tab-pane fade" id="reviews">
+                    <div class="col-sm-12">
+                        <ul>
+                            <li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
+                            <li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
+                            <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+                        </ul>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                        <p><b>Write Your Review</b></p>
+
+                        <form autocomplete="off" asp-action="CommentProduct" asp-controller="Product" method="POST">
+                            <span>
+                                <input asp-for="@Model.ProductDetails.Id" name="ProductId" type="hidden" />
+                                <input name="Star" type="hidden" value="4"/>
+                                <input asp-for="@Model.Name" type="text" placeholder="Tên của bạn"/>
+                                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                                <input asp-for="@Model.Email" type="text" placeholder="Mail của bạn" />
+                                <span asp-validation-for="@Model.Email" class="text-danger"> </span>
+                            </span>
+                            <textarea asp-for="@Model.Comment"></textarea>
+                            <span asp-validation-for="@Model.Comment" class="text-danger"></span>
+
+                            <b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
+                            <button type="submit" class="btn btn-default pull-right">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="recommended_items">
+            <!-- Recommended Items -->
+            <h2 class="title text-center">Sản Phẩm Liên Quan</h2>
+
+            <div class="row">
+                @if (ViewBag.RelatedProducts != null)
+                {
+                    foreach (var relatedProduct in ViewBag.RelatedProducts as IEnumerable<ProductModel>)
+                    {
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <a asp-action="Details" asp-controller="Product" asp-route-Id="@relatedProduct.Id">
+                                            <img src="~/media/products/@relatedProduct.Image" alt="@relatedProduct.Name" class="img-fluid" />
+                                            <h2>@relatedProduct.Price.ToString("#,##0 VND")</h2>
+                                            <p>@relatedProduct.Name</p>
+                                            <p>Danh mục: @relatedProduct.Category.Name</p>
+                                            <p>Thương hiệu: @relatedProduct.Brand.Name</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-center">Không có sản phẩm liên quan.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
